@@ -62,8 +62,8 @@ int send_email(char *from, char *to, char *topic, char *parameterName, char *dat
   sprintf(to_mail,"<%s>",to);
 
   curl = curl_easy_init();
-  sprintf(payload_text, "From: Kasparas Elzbutas  <%s> \r\n"
-                          "To: Kasparas Elzbutas  <%s> \r\n"
+  sprintf(payload_text, "From: John Smith  <%s> \r\n"
+                          "To: Sakul Sanenaj  <%s> \r\n"
                           "Subject: MQTT Rutx11\r\n"
                           "\r\n"
                           "Topic: %s\r\n"
