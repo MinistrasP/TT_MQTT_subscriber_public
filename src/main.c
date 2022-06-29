@@ -91,7 +91,6 @@ int main (void)
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = 0;
     sigaction(SIGINT, &sigIntHandler, NULL);
-
     int rc = 0;
 
     openlog("syslog_log", LOG_PID, LOG_USER);
@@ -101,14 +100,16 @@ int main (void)
     if(rc != 0){
         syslog(LOG_ERR, "MQTT subsriber: Failed to read UCI data");
         closelog();
-        return 0;
+        return 1;
     }
+    
     rc = setupMQTTSubscriber();
     if(rc != 0){
         syslog(LOG_INFO, "MQTT subsriber: Failed to setup MQTT data");
+        cleanup();
+        return 1;
     }
     cleanup();
-    
 
     return 0;
 }

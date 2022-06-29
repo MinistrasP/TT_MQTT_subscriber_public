@@ -37,14 +37,23 @@ static size_t payload_source(char *ptr, size_t size, size_t nmemb, void *userp)
  
   return 0;
 }
- 
+
+/*
+* Send email from <from> email to <to> email.
+* Payload consists of mqtt topic <topic>, parameter name <parameterName>
+* Payload data <data>, expected data from event <expectedData>, condition from event <condition>
+* Email payload string is dynamically allocated, extra input size is set be #define DEFAULTPAYLOADSIZE
+*
+*/
 int send_email(char *from, char *to, char *topic, char *parameterName, char *data, char *expectedData, char *condition)
 {
   CURL *curl;
   CURLcode res = CURLE_OK;
   struct curl_slist *recipients = NULL;
   struct upload_status upload_ctx = { 0 };
-  payload_text = (char*) malloc((strlen(from)+strlen(to)+strlen(topic)+strlen(parameterName)+strlen(data)+strlen(expectedData)+strlen(condition)+DEFAULTPAYLOADSIZE)*sizeof(char));
+  payload_text = (char*) malloc((strlen(from)+strlen(to)+strlen(topic)+
+                  strlen(parameterName)+strlen(data)+
+                  strlen(expectedData)+strlen(condition)+DEFAULTPAYLOADSIZE)*sizeof(char));
   char *from_mail;
   char *to_mail;
   from_mail = (char*) malloc((strlen(from)+3)*sizeof(char));
@@ -63,7 +72,6 @@ int send_email(char *from, char *to, char *topic, char *parameterName, char *dat
                           "Expected Data: %s\r\n"
                           "Condition: %s\r\n"
                           ,from,to,topic,parameterName,data,expectedData,condition);
-  
 
     if(curl) {
 

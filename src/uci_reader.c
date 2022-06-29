@@ -147,51 +147,51 @@ int uci_read(void)
 
         if(strstr(section_type, "configuration")){
             uci_foreach_element(&section->options, j){
-            struct uci_option *option = uci_to_option(j);
-            char *option_name = option->e.name;
-            
-            if (option->type == UCI_TYPE_STRING){
-                userDataInput(uDat, option_name, option->v.string);
-            }
-            else
-            {
-                char *list = uci_list_to_string(&option->v.list);
-                userDataInput(uDat, option_name, list);
-            }
+                struct uci_option *option = uci_to_option(j);
+                char *option_name = option->e.name;
+                
+                if (option->type == UCI_TYPE_STRING){
+                    userDataInput(uDat, option_name, option->v.string);
+                }
+                else
+                {
+                    char *list = uci_list_to_string(&option->v.list);
+                    userDataInput(uDat, option_name, list);
+                }
             }
         }
         if(strstr(section_type, "topic")){
             uci_foreach_element(&section->options, j){
-            struct uci_option *option = uci_to_option(j);
-            char *option_name = option->e.name;
-            
-            if (option->type == UCI_TYPE_STRING){
-                topicDataInput(option_name, option->v.string);
-            }
-            else
-            {
-                char *list = uci_list_to_string(&option->v.list);
-                topicDataInput(option_name, list);
-                free(list);
-            }
+                struct uci_option *option = uci_to_option(j);
+                char *option_name = option->e.name;
+                
+                if (option->type == UCI_TYPE_STRING){
+                    topicDataInput(option_name, option->v.string);
+                }
+                else
+                {
+                    char *list = uci_list_to_string(&option->v.list);
+                    topicDataInput(option_name, list);
+                    free(list);
+                }
             }
         }   
         if(strstr(section_type, "event")){
             Event *ev = (Event *) malloc(sizeof *ev);
 
             uci_foreach_element(&section->options, j){
-            struct uci_option *option = uci_to_option(j);
-            char *option_name = option->e.name;
-            
-            if (option->type == UCI_TYPE_STRING){
-                eventDataInput(ev, option_name,option->v.string);
-            }
-            else
-            {
-                char *list = uci_list_to_string(&option->v.list);
-                eventDataInput(ev, option_name, list);
-                free(list);
-            }
+                struct uci_option *option = uci_to_option(j);
+                char *option_name = option->e.name;
+                
+                if (option->type == UCI_TYPE_STRING){
+                    eventDataInput(ev, option_name,option->v.string);
+                }
+                else
+                {
+                    char *list = uci_list_to_string(&option->v.list);
+                    eventDataInput(ev, option_name, list);
+                    free(list);
+                }
             }
         }
     }

@@ -16,21 +16,21 @@ extern struct Node* head;
 extern userData* uDat;
 
 /*
-*   Format data to send email, lowers unnecessary code
-*
-*
+*   Send email with supplied data
+*   Gets called after check_value_string()
 */
 static int prepare_email(Event *tempEvent, char *input_string, char *input_conditionString)
 {
     if(send_email(uDat->user_email, uDat->destination_email, tempEvent->topic, tempEvent->parameter_name, input_string, tempEvent->expectedValue, input_conditionString) != 0){
-        syslog(LOG_WARNING, "Failed to send email for topic <%s>", tempEvent->topic);
+        syslog(LOG_WARNING, "MQTT subsriber: Failed to send email for topic <%s>", tempEvent->topic);
         return 1;
     }
     return 0;
 } 
 /*
-*   Function checks if input value matches expected value based on condition
+*   Checks if input value matches expected value based on conditions
 *   Condition is specified in Event typedef which is passed for this topic
+*   Calls a function to send email if event condition matches
 */
 static int check_value_string(Event *tempEvent, char *input_string)
 {
@@ -39,12 +39,6 @@ static int check_value_string(Event *tempEvent, char *input_string)
             if(prepare_email(tempEvent, input_string, "Input string is equal to expected value") != 0){
                 return 1;
             }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
         }
     }
     else if (tempEvent->condition == 4){
@@ -52,14 +46,13 @@ static int check_value_string(Event *tempEvent, char *input_string)
             if(prepare_email(tempEvent, input_string, "Input string is not equal to expected value") != 0){
                 return 1;
             }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
         }
     }
+    else{
+        syslog(LOG_WARNING, "MQTT subsriber: Wrong condition for type <%s>",tempEvent->parameter_type);
+        return 1;
+    }
+    return 0;
 }
 static int check_value_int(Event *tempEvent, int input_int)
 {
@@ -69,91 +62,38 @@ static int check_value_int(Event *tempEvent, int input_int)
 
     if(tempEvent->condition == 1){
         if(input_expected_int < input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is higher than expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
+            prepare_email(tempEvent, tempCharInt, "Input number is higher than expected value");
         }
     }
     else if ((tempEvent->condition == 2)){
         if(input_expected_int > input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is lower than expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
+            prepare_email(tempEvent, tempCharInt, "Input number is lower than expected value");
         }
     }
     else if ((tempEvent->condition == 3)){
         if(input_expected_int == input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is equal to expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }   
-        else{
-            return 0;
+            prepare_email(tempEvent, tempCharInt, "Input number is equal to expected value");
         }
-    }
+    }   
     else if ((tempEvent->condition == 4)){
         if(input_expected_int != input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is not equal to expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
+            prepare_email(tempEvent, tempCharInt, "Input number is not equal to expected value");
         }
     }
     else if ((tempEvent->condition == 5)){
         if(input_expected_int >= input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is lower or equal to expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
-        }
+            prepare_email(tempEvent, tempCharInt, "Input number is lower or equal to expected value");
     }
     else if ((tempEvent->condition == 6)){
         if(input_expected_int <= input_int){
-            if(prepare_email(tempEvent, tempCharInt, "Input number is higher or equal to expected value") != 0){
-                free(tempCharInt);
-                return 1;
-            }
-            else{
-                return 0;
-            }
-        }
-        else{
-            return 0;
+            prepare_email(tempEvent, tempCharInt, "Input number is higher or equal to expected value");
         }
     }
     else{
-        free(tempCharInt);
+    
     }
+    free(tempCharInt);
+    return 0;
 }
 
 static int checkSenderInfo()
@@ -230,7 +170,7 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	if(reason_code != 0){
 		mosquitto_disconnect(mosq);
 	}
-
+    //Do i event need malloc here?
 	struct Node* temp_node = (struct Node*) malloc(sizeof(struct Node));
 	temp_node->topic = (char*)malloc(sizeof(char*));
 	temp_node->topic = head->topic;
@@ -241,13 +181,11 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
             rc = mosquitto_subscribe(mosq, NULL, temp_node->topic, 1);
 			if(rc != MOSQ_ERR_SUCCESS){
                 syslog(LOG_WARNING, "MQTT subsriber: Error subscribing to topic %s, error message %s", temp_node->topic, mosquitto_strerror(rc));
-				//mosquitto_disconnect(mosq); Wont disconnect just because of one topic
 			}
 		}
 		temp_node = temp_node->next;
     }
 	free(temp_node);
-	//Memory leakas cia, klausimas kaip
 }	
 
 void on_subscribe(struct mosquitto *mosq, void *obj, int mid, int qos_count, const int *granted_qos)

@@ -6,7 +6,7 @@
 #include "linkedList.h"
 
 /*
-*   Add node to linked list
+*   Adds node to linked list
 */
 void addNode(struct Node** head_ref, char *new_topic)
 {
@@ -73,26 +73,12 @@ void addEventToNode(struct Node **head_ref, Event *new_event)
 }
 
 /*
-*   Prints whole linked list
-*   Each node prints its matched event (work in progress)
+*   Free's input event and all following events memory
+*   Must supply a non empty event 
+*   Gets called by deleteList() function below
 */
-void printList(struct Node *n)
-{
-    Event *tempEvent = NULL;
-    struct Node *tempNode = n;
-    while(tempNode != NULL){
-        if(tempNode->topic_event != NULL){
-            tempEvent = tempNode->topic_event;
-            while(tempEvent != NULL){
-                tempEvent = tempEvent->next_event;
-            }
-        }
-        tempNode = tempNode->next;
-    }
-    free(tempEvent);
-}
 
-void deleteEvents(Event **ev)
+static void deleteEvents(Event **ev)
 {
     Event *tempEvent;
     if((*ev)->next_event == NULL){
@@ -120,7 +106,9 @@ void deleteEvents(Event **ev)
 }
 
 /*
-*   Deletes all linked list and matching events by interations
+*   Deletes all linked lists, starting from last one
+*   If event exists calls deleteEvents() to delete matching events
+*   Must check if event exists for deleteEvents()
 */
 
 void deleteList(struct Node **n)

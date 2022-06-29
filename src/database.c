@@ -10,6 +10,11 @@ sqlite3 *db;
 sqlite3_stmt *res;
 const char filepath[] = "/var/log/mqtt.db";
 
+/*
+*   Creates a fixed name <mqtt> database
+*   With 5 columns
+*   Doesnt drop table, on finish closes database
+*/
 int createDb(void)
 {
     char *err_msg;
@@ -32,9 +37,10 @@ int createDb(void)
 }
 
 /*
-*   Inserts data into filepath[] database
-*   Data is inserted inside Log table
-*   There are 2 inputs: 1.data level 2.data
+*   Inserts data into fixed filepath database
+*   Data is inserted inside mqtt table
+*   There are 2 user generated inputs: topic and payload
+*   Id, date, time are automatically generated
 */
 int insertData(char *topic, char* payload)  //Inserts single line of data, database needs to be opened/close
 {
@@ -55,8 +61,7 @@ int insertData(char *topic, char* payload)  //Inserts single line of data, datab
 }
 
 /*
-*   Prints all data inside filepath[] database
-*   From Log table
+*   Prints all data of fixed path database from mqtt table
 */
 int printData(void)  
 {
@@ -86,7 +91,7 @@ int printData(void)
 }
 
 /*
-*   deleteAllData() used to delete all data from database
+*   deleteAllData() used to delete all data from fixed database
 *   Automatically opens/closes database
 */
 int deleteAllData(void)
@@ -132,7 +137,8 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName)
 }
 
 /*
-*   openDatabase is used to open database externally
+*   Is used to open database
+*   Should be called before data insertion, and after dbCreation if not created
 */
 int openDatabase(void)
 {
@@ -148,7 +154,8 @@ int openDatabase(void)
 }
 
 /*
-*   closeDatabase is used to close database externally
+*   Used to close database.
+*   Should be used after data insertion.
 */
 void closeDatabase(void)
 {
