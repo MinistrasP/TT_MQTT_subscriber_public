@@ -28,4 +28,4 @@ struct Node {
 
 void addNode(struct Node **head_ref, char *new_topic);
 void addEventToNode(struct Node **head_ref, Event *new_event);
-void deleteList(struct Node **n);
+void deleteList(struct Node *n);

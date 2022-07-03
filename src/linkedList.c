@@ -78,30 +78,17 @@ void addEventToNode(struct Node **head_ref, Event *new_event)
 *   Gets called by deleteList() function below
 */
 
-static void deleteEvents(Event **ev)
+static void deleteEvents(Event *ev)
 {
-    Event *tempEvent;
-    if((*ev)->next_event == NULL){
-        free((*ev)->expectedValue);
-        free((*ev)->parameter_name);
-        free((*ev)->parameter_type);
-        free((*ev)->topic);
-        free(ev);
-        return;
-    }
-    else{
-        while((*ev)->next_event != NULL){
-            tempEvent = (*ev)->next_event;
-            while(tempEvent->next_event != NULL){
-                tempEvent = tempEvent->next_event;
-            }
-            free(tempEvent->expectedValue);
-            free(tempEvent->parameter_name);
-            free(tempEvent->parameter_type);
-            free(tempEvent->topic);
-            free(tempEvent);
-        }
-        return;
+    Event *tempEv;
+    while (ev != NULL){
+        tempEv = ev;
+        ev = ev->next_event;
+        free(tempEv->topic);
+        free(tempEv->parameter_name);
+        free(tempEv->parameter_type);
+        free(tempEv->expectedValue);
+        free(tempEv);
     }
 }
 
@@ -111,34 +98,16 @@ static void deleteEvents(Event **ev)
 *   Must check if event exists for deleteEvents()
 */
 
-void deleteList(struct Node **n)
+void deleteList(struct Node *n)
 {
-    struct Node *lastTempNode = NULL;
-    if((*n) == NULL){
-        return;
-    }
-    else if((*n)->next == NULL){
-        if((*n)->topic_event != NULL ){
-            deleteEvents(&((*n)->topic_event));
-        }
-        goto end;
-    }
-    else{
-        while((*n)->next != NULL){
-            lastTempNode = (*n)->next;
-            while(lastTempNode->next != NULL){
-                lastTempNode = lastTempNode->next;
-            }
-            deleteEvents(&((*n)->topic_event));
-            free(lastTempNode->topic);
-            free(lastTempNode);
-        }
-        return;
+    struct Node *temp;
+
+    while (n != NULL){
+        temp = n;
+        n = n->next;
+        deleteEvents(temp->topic_event);
+        free(temp->topic);
+        free(temp);
     }
 
-
-    end:
-        free((*n)->topic);
-        free(n);
-        return;
 }

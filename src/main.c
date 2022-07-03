@@ -24,7 +24,7 @@ static void cleanup()
     free(uDat->user_email);
     free(uDat->username);
     free(uDat);
-    //deleteList(&head); //Illegal instruction fix 06-29    
+    deleteList(head);  
     //Sutvarkyt UCIfreecontext
     closeDatabase();
     closelog();
