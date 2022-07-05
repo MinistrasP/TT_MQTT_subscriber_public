@@ -104,10 +104,12 @@ int main (void)
     
     rc = setupMQTTSubscriber();
     if(rc != 0){
-        syslog(LOG_INFO, "MQTT subsriber: Failed to setup MQTT data");
+        syslog(LOG_ERR, "MQTT subsriber: Failed to setup MQTT data");
         cleanup();
         return 1;
     }
+    
+    syslog(LOG_ERR, "MQTT subsriber: Unexpected exit");
     cleanup();
 
     return 0;

@@ -83,6 +83,7 @@ static int check_value_int(Event *tempEvent, int input_int)
     else if ((tempEvent->condition == 5)){
         if(input_expected_int >= input_int){
             prepare_email(tempEvent, tempCharInt, "Input number is lower or equal to expected value");
+        }
     }
     else if ((tempEvent->condition == 6)){
         if(input_expected_int <= input_int){
@@ -90,7 +91,6 @@ static int check_value_int(Event *tempEvent, int input_int)
         }
     }
     else{
-    
     }
     free(tempCharInt);
     return 0;
