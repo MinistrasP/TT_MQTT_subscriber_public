@@ -20,10 +20,7 @@ In mqtt_sub.config you can specify:
 8. email_pass: 		  SMTP enabled email password to send data FROM
 9. destination_email: email where data is sent to
 
-You can also add subsribed topics here, few example's are already pre-written.
-
-Topics only need one option.
-
+You can also add subsribed topics here, example's are already pre-written. Topics only need one option.
 Events require multiple options:
 
 1. topic -          typical topic format e.g. '/topic1'
@@ -38,6 +35,12 @@ Events require multiple options:
 	f) 6 - input int is higher or equal to expected value
 5. expectedValue -  a string/int that gets compared to message value
 
+Recieved email format is:
+Topic: <topic>
+Parameter Name: <parameter_name>
+Data: <value>
+Expected Data: <expectedValue>
+Condition: A pre-written condition based on <condition> value
 
 !!!Program only sends emails if all required conditions are set!!!:
 
