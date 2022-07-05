@@ -1,4 +1,4 @@
-# TT_MQTT_subscriber_public
+# TT_MQTT_subscriber
 
 MQTT subscriber program written in C for openwrt-system.
 
