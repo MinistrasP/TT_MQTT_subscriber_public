@@ -45,17 +45,17 @@ static int userDataInput(userData* userData, char *option_name, char *option)
 {
     if(strstr(option_name, "username"))
     {
-        uDat->username = (char*)malloc(sizeof(char*));
+        uDat->username = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->username = option;
     }
     if(strstr(option_name, "password"))
     {
-        uDat->password = (char*)malloc(sizeof(char*));
+        uDat->password = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->password = option;
     }
     if(strstr(option_name, "ip_address"))
     {
-        uDat->ipAddress = (char*)malloc(sizeof(char*));
+        uDat->ipAddress = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->ipAddress = option;
     }
     if(strstr(option_name, "port"))
@@ -68,17 +68,17 @@ static int userDataInput(userData* userData, char *option_name, char *option)
     }
     if(strstr(option_name, "user_email"))
     {
-        uDat->user_email = (char*)malloc(sizeof(char*));
+        uDat->user_email = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->user_email = option;
     }
     if(strstr(option_name, "email_pass"))
     {
-        uDat->email_password = (char*)malloc(sizeof(char*));
+        uDat->email_password = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->email_password = option;
     }
     if(strstr(option_name, "destination_email"))
     {
-        uDat->destination_email = (char*)malloc(sizeof(char*));
+        uDat->destination_email = (char*) malloc(sizeof(option) * sizeof(char*));
         uDat->destination_email = option;
     }
     return 0;
@@ -97,17 +97,17 @@ static int eventDataInput(Event* event, char *option_name, char *option)
 {
     if(strstr(option_name, "topic"))
     {
-        event->topic = (char*)malloc(sizeof(char*));
+        event->topic = (char*) malloc(sizeof(option) * sizeof(char*));
         event->topic = option;
     }
     if(strstr(option_name, "parameter_name"))
     {
-        event->parameter_name = (char*)malloc(sizeof(char*));
+        event->parameter_name = (char*) malloc(sizeof(option) * sizeof(char*));
         event->parameter_name = option;
     }
     if(strstr(option_name, "parameter_type"))
     {
-        event->parameter_type = (char*)malloc(sizeof(char*));
+        event->parameter_type = (char*) malloc(sizeof(option) * sizeof(char*));
         event->parameter_type = option;
     }
     if(strstr(option_name, "condition"))
@@ -116,7 +116,7 @@ static int eventDataInput(Event* event, char *option_name, char *option)
     }
     if(strstr(option_name, "expectedValue"))
     {
-        event->expectedValue = (char*)malloc(sizeof(char*));
+        event->expectedValue = (char*) malloc(sizeof(option) * sizeof(char*));
         event->expectedValue = option;
         addEventToNode(&head, event);
     }
