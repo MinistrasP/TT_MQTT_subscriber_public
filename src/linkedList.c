@@ -13,7 +13,7 @@ void addNode(struct Node** head_ref, char *new_topic)
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
     struct Node *last = *head_ref;
 
-    new_node->topic = (char*)malloc(sizeof(char*));
+    new_node->topic = (char*) malloc(sizeof(new_topic) * sizeof(char*));
     new_node->topic = new_topic;
     new_node->topic_event = NULL;
     new_node->next = NULL;
@@ -42,10 +42,10 @@ void addEventToNode(struct Node **head_ref, Event *new_event)
     Event *ev = (Event *) malloc(sizeof *ev);
     Event *last_event = NULL;
 
-    ev->topic=(char*)malloc(sizeof(char*));
-    ev->parameter_name=(char*)malloc(sizeof(char*));
-    ev->parameter_type=(char*)malloc(sizeof(char*));
-    ev->expectedValue=(char*)malloc(sizeof(char*));
+    ev->topic=(char*) malloc(sizeof(new_event->topic) * (sizeof(char*));
+    ev->parameter_name=(char*) malloc(sizeof(new_event->parameter_name) * sizeof(char*));
+    ev->parameter_type=(char*) malloc(sizeof(new_event->parameter_type) * sizeof(char*));
+    ev->expectedValue=(char*) malloc(sizeof(new_event->expectedValue) * sizeof(char*));
 
     ev->topic = new_event->topic;
     ev->parameter_name = new_event->parameter_name;
