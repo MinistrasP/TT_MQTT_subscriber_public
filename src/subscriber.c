@@ -170,17 +170,16 @@ void on_connect(struct mosquitto *mosq, void *obj, int reason_code)
 	if(reason_code != 0){
 		mosquitto_disconnect(mosq);
 	}
-    //Do i event need malloc here?
 	struct Node* temp_node = (struct Node*) malloc(sizeof(struct Node));
 	temp_node->topic = (char*)malloc(sizeof(char*));
 	temp_node->topic = head->topic;
 	temp_node->next = head->next;
 
 	while(temp_node != NULL){
-        if(temp_node->topic != NULL){
-            rc = mosquitto_subscribe(mosq, NULL, temp_node->topic, 1);
+        	if(temp_node->topic != NULL){
+           		rc = mosquitto_subscribe(mosq, NULL, temp_node->topic, 1);
 			if(rc != MOSQ_ERR_SUCCESS){
-                syslog(LOG_WARNING, "MQTT subsriber: Error subscribing to topic %s, error message %s", temp_node->topic, mosquitto_strerror(rc));
+				syslog(LOG_WARNING, "MQTT subsriber: Error subscribing to topic %s, error message %s", temp_node->topic, mosquitto_strerror(rc));
 			}
 		}
 		temp_node = temp_node->next;
