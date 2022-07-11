@@ -14,7 +14,7 @@ void addNode(struct Node** head_ref, char *new_topic)
     struct Node *last = *head_ref;
 
     new_node->topic = (char*) malloc(sizeof(new_topic) * sizeof(char*));
-    new_node->topic = new_topic;
+    strcpy(new_node->topic, new_topic);
     new_node->topic_event = NULL;
     new_node->next = NULL;
 
@@ -47,13 +47,13 @@ void addEventToNode(struct Node **head_ref, Event *new_event)
     ev->parameter_type=(char*) malloc(sizeof(new_event->parameter_type) * sizeof(char*));
     ev->expectedValue=(char*) malloc(sizeof(new_event->expectedValue) * sizeof(char*));
 
-    ev->topic = new_event->topic;
-    ev->parameter_name = new_event->parameter_name;
-    ev->parameter_type = new_event->parameter_type;
-    ev->expectedValue = new_event->expectedValue;
+    strcpy(ev->topic, new_event->topic);
+    strcpy(ev->parameter_name, new_event->parameter_name);
+    strcpy(ev->parameter_type, new_event->parameter_type);
+    strcpy(ev->expectedValue, expectedValue);
     ev->condition = new_event->condition;
     ev->next_event = NULL;
-
+  
     while(last != NULL){
         if(strcmp(last->topic, ev->topic) == 0){
             if(last->topic_event == NULL){
